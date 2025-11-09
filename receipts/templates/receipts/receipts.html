@@ -1,0 +1,13 @@
+{% extends "receipts/base.html" %} {% block content %}
+
+<h3>Receipts List</h3>
+
+<ol>
+  {% for receipt in receipts %}
+  <li>{{receipt}}</li>
+  {% empty %}
+  <li>No receipts have been added yet.</li>
+  {% endfor %}
+</ol>
+
+{% endblock content %}
