@@ -1,0 +1,17 @@
+{% extends "receipts/base.html" %} {% block content %}
+
+<h3>Items List</h3>
+
+<ol>
+  {% for item in items %}
+  <li>
+    <a href="{% url 'receipts:items' %}">{{item.name}}</a
+    ><span> {{item.total_price|floatformat:2}}</span> x
+    <span>{{item.total_quantity|floatformat:3}}</span>
+  </li>
+  {% empty %}
+  <li>No items have been added yet.</li>
+  {% endfor %}
+</ol>
+
+{% endblock content %}

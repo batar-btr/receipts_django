@@ -4,7 +4,11 @@
 
 <ol>
   {% for receipt in receipts %}
-  <li>{{receipt}}</li>
+  <li>
+    <a href="{% url 'receipts:receipt' receipt.receipt_number %}"
+      >{{receipt}}</a
+    >
+  </li>
   {% empty %}
   <li>No receipts have been added yet.</li>
   {% endfor %}

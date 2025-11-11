@@ -1,0 +1,43 @@
+{% extends "../receipts/base.html" %} {% block content %}
+<h2>Search Items</h2>
+
+<form method="get" action="{% url 'receipts:search_items' %}">
+  <input
+    type="text"
+    name="q"
+    value="{{ query|default:'' }}"
+    placeholder="Enter product name"
+    required
+  />
+  <button type="submit">Search</button>
+</form>
+
+<hr />
+{% if grouped %}
+  <a href="?{% if request.GET.q %}q={{ request.GET.q }}{% endif %}">Show all</a>
+{% else %}
+  <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}group=name">
+  Group by name
+</a>
+{% endif %}
+<hr />
+{% if query %}
+  {% if items %}
+    <ul>
+      {% for item in items %}
+         {% if grouped %}
+            <li>{{item.name}} - Qty:{{item.total_quantity}} - {{item.total_sum}}</li>
+         {% else %}
+             <li>{{ item.name }} — Qty:{{ item.quantity }} —  {{ item.sum }} - {{item.receipt.date_time}}</li>
+         {% endif %}
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p><strong>No items found</strong></p>
+  {% endif %} 
+  {% if totals %}
+    <h4>{{totals.total_quantity}} {{totals.total_sum}}</h4>
+  {% endif %}
+{% endif %}
+
+{% endblock %}
