@@ -1,0 +1,35 @@
+{% extends "receipts/base.html" %} {% block content %}
+
+<h3>Items List</h3>
+
+{% if query_name %}
+  <ol>
+    {% for item in items %}
+      <li>{{item.name}} - 
+        {{item.price|floatformat:2}} - 
+        {{item.total_quantity|floatformat:3}} -
+         {{item.total_sum|floatformat:2}} - 
+         {{item.receipt_date}} - 
+         {{item.receipt__receipt_number}}</li>
+    {% endfor %}
+  </ol>
+  <h4>{{item.name}} plot</h4>
+  <section>
+    {{plot|safe}}
+  </section>
+{% else %}
+  <ol>
+    {% for item in items %}
+      <li>
+        <a href="{% url 'receipts:items' %}?name={{ item.name|urlencode }}">{{item.name}}</a
+        ><span> {{item.total_price|floatformat:2}}</span> x
+        <span>{{item.total_quantity|floatformat:3}}</span>
+      </li>
+    {% empty %}
+      <li>No items have been added yet.</li>
+    {% endfor %}
+  </ol>
+{% endif %}
+
+
+{% endblock content %}

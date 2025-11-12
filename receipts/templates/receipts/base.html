@@ -33,7 +33,8 @@
 
     <h3>
       This is your <a href="{% url 'receipts:index' %}">Receipts</a> app!
-      <a href="{% url 'receipts:receipts' %}">Receipts List</a>
+      <a href="{% url 'receipts:receipts' %}">Receipts List</a> - 
+      <a href="{% url 'receipts:items' %}">Items</a>
     </h3>
     <hr />
     {% block content %}{% endblock content %}
