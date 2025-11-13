@@ -3,6 +3,7 @@ from .models import Receipt, Item
 from django.db.models import Sum, F, Avg
 import pandas as pd
 import plotly.express as px
+from .utils.charts import create_total_sum_plot, get_multiple_axes_plot
 # Create your views here.
 
 
@@ -32,6 +33,7 @@ def items(request):
     plot_html = ""
 
     if query_name:
+
         items = (
             Item.objects
             .filter(name=query_name)
@@ -44,14 +46,9 @@ def items(request):
             )
             .order_by('receipt__date_time')
         )
-        df = pd.DataFrame(items, columns=["total_sum", "receipt_date"])
-        df.rename(columns={"receipt_date": "date"}, inplace=True)
-        df['date'] = pd.to_datetime(df['date'])
-        df.sort_values('date', inplace=True)
 
-        fig = px.line(df, x='date', y='total_sum',
-                      title=f'Sum of {query_name} Over Time', markers=True)
-        plot_html = fig.to_html(full_html=False)
+        # plot_html = create_total_sum_plot(items, query_name)
+        plot_html = get_multiple_axes_plot(items)
 
     else:
         items = (
