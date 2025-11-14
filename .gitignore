@@ -3,6 +3,8 @@ __pycache__/
 *.py[codz]
 *$py.class
 
+receipts_xml
+
 **.db
 test.py
 testdb.py
