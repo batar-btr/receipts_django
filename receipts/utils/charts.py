@@ -14,13 +14,21 @@ def create_total_sum_plot(items, name):
     return fig.to_html(full_html=False, include_plotlyjs=False)
 
 
-def get_multiple_axes_plot(items):
+def histogram(items):
     df = pd.DataFrame(items)
     df.rename(columns={"receipt_date": "date"}, inplace=True)
     df['date'] = pd.to_datetime(df['date'])
     df.sort_values('date', inplace=True)
 
-    import plotly.graph_objects as go
+    fig = px.histogram(df, x="date", y="total_sum")
+    return fig.to_html(full_html=False, include_plotlyjs=False)
+
+
+def get_multiple_axes_plot(items):
+    df = pd.DataFrame(items)
+    df.rename(columns={"receipt_date": "date"}, inplace=True)
+    df['date'] = pd.to_datetime(df['date'])
+    df.sort_values('date', inplace=True)
 
     fig = go.Figure()
 

@@ -36,7 +36,7 @@
     <p><strong>No items found</strong></p>
   {% endif %} 
   {% if totals %}
-    <h4>{{totals.total_quantity}} {{totals.total_sum}}</h4>
+    <h4>{{totals.total_quantity}} {{totals.total_sum}} {{avg_sum|floatformat:2}}Uah per day({{avg}}days)</h4>
   {% endif %}
 {% endif %}
 

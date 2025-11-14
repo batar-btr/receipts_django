@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from .models import Receipt, Item
-from django.db.models import Sum, F, Avg
+from django.db.models import Sum, F, Avg, Min
+from django.utils import timezone
 import pandas as pd
+from datetime import datetime
 import plotly.express as px
-from .utils.charts import create_total_sum_plot, get_multiple_axes_plot
+from .utils.charts import create_total_sum_plot, get_multiple_axes_plot, histogram
 # Create your views here.
 
 
@@ -14,7 +16,7 @@ def index(request):
 
 def receipts(request):
     """The receipts list page"""
-    receipts = Receipt.objects.order_by('date_time')
+    receipts = Receipt.objects.order_by('-date_time')
     context = {'receipts': receipts}
     return render(request, 'receipts/receipts.html', context)
 
@@ -48,7 +50,8 @@ def items(request):
         )
 
         # plot_html = create_total_sum_plot(items, query_name)
-        plot_html = get_multiple_axes_plot(items)
+        # plot_html = get_multiple_axes_plot(items)
+        plot_html = histogram(items)
 
     else:
         items = (
@@ -70,6 +73,7 @@ def search_items(request):
 
     items = Item.objects.none()
     totals = {}
+    total_days = 1
 
     if query:
         items = (
@@ -81,8 +85,15 @@ def search_items(request):
         # ORM aggregation (efficient single SQL query)
         totals = items.aggregate(
             total_sum=Sum("sum"),
-            total_quantity=Sum("quantity")
+            total_quantity=Sum("quantity"),
+            days=Min("receipt__date_time")
         )
+        try:
+            total_days = (timezone.now().date() -
+                          datetime.fromisoformat(totals["days"]).date()).days
+        except:
+            print('Error')
+
     if group == "name":
         items = (
             items.values("name")
@@ -97,5 +108,7 @@ def search_items(request):
         "query": query,
         "items": items,
         "totals": totals,
+        "avg": total_days,
+        "avg_sum": totals.get('total_sum', 1) / total_days,
         "grouped": grouped
     })
