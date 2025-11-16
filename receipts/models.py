@@ -35,3 +35,44 @@ class Item(models.Model):
 
     def __str__(self):
         return f"{self.name or 'Unnamed item'} (x{self.quantity or 0})"
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    class Meta:
+        verbose_name_plural = "categories"
+        db_table = "categories"
+        ordering = ("name",)
+
+    def __str__(self):
+        return self.name
+
+
+class Product(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    categories = models.ManyToManyField(
+        Category, related_name="products", blank=True)
+
+    class Meta:
+        db_table = "products"
+        ordering = ("name",)
+
+    def __str__(self):
+        return self.name
+
+
+class ItemNameProduct(models.Model):
+    """
+    Map item name string -> product.
+    This keeps the Item model unchanged.
+    """
+    item_name = models.CharField(max_length=255, unique=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "item_name_products"
+        ordering = ("item_name",)
+
+    def __str__(self):
+        return f"{self.item_name} → {self.product.name}"

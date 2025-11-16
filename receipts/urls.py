@@ -13,4 +13,5 @@ urlpatterns = [
     path('receipts/<int:receipt_number>', views.receipt, name='receipt'),
     path('items/', views.items, name='items'),
     path("items/search/", views.search_items, name="search_items"),
+    path("test", views.test_cat, name="test"),
 ]

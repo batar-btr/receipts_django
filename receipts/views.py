@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Receipt, Item
+from .models import Receipt, Item, Category, ItemNameProduct
 from django.db.models import Sum, F, Avg, Min
 from django.utils import timezone
 import pandas as pd
@@ -27,6 +27,23 @@ def receipt(request, receipt_number):
     items = receipt.items.all()
     context = {"items": items, "receipt": receipt}
     return render(request, 'receipts/receipt.html', context)
+
+
+def test_cat(request):
+    # Step 1: get the category
+    category = Category.objects.get(name="vegetables")
+
+    # Step 2: get all products in this category
+    products = category.products.all()
+
+    # Step 3: get all item names linked to these products
+    item_names = ItemNameProduct.objects.filter(
+        product__in=products).values_list('item_name', flat=True)
+
+    # Step 4: get all Items whose name is in these names
+    items = Item.objects.filter(name__in=item_names)
+
+    return render(request, 'receipts/test.html', {"items": items})
 
 
 def items(request):
