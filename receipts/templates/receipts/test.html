@@ -1,6 +1,11 @@
-<h1>Items in Vegetables</h1>
-<ul>
-  {% for item in items %}
-    <li>{{ item.name }} — {{ item.quantity }} — {{ item.price }}</li>
-  {% endfor %}
-</ul>
+{% extends 'receipts/base.html' %}
+
+{% block content %}
+  <h1>Items in Vegetables!</h1>
+  <ul>
+    {% for item in items %}
+      <li>{{ item.name }} — {{ item.total_quantity }} — {{ item.total_price }}</li>
+    {% endfor %}
+  </ul>
+  <h4>{{item.total_price}}</h4>
+{% endblock content %}

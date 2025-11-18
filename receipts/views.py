@@ -41,7 +41,17 @@ def test_cat(request):
         product__in=products).values_list('item_name', flat=True)
 
     # Step 4: get all Items whose name is in these names
-    items = Item.objects.filter(name__in=item_names)
+    items = (
+        Item.objects
+        .values('name')  # GROUP BY name
+        .filter(name__in=item_names)
+        .annotate(
+            total_price=Sum('sum'),
+            total_quantity=Sum('quantity')
+        )
+        .order_by('-total_price')  # optional
+    )
+    # items = Item.objects.filter(name__in=item_names)
 
     return render(request, 'receipts/test.html', {"items": items})
 
