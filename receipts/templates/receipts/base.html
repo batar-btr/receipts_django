@@ -35,7 +35,10 @@
     <h3>
       This is your <a href="{% url 'receipts:index' %}">Receipts</a> app!
       <a href="{% url 'receipts:receipts' %}">Receipts List</a> - 
-      <a href="{% url 'receipts:items' %}">Items</a>
+      <a href="{% url 'receipts:items' %}">Items</a> - 
+      <a href="{% url 'receipts:search_items' %}">Search</a> -
+      <a href="{% url 'receipts:categories' %}">Categories</a> -
+      <a href="{% url 'receipts:test' %}">Test</a>
     </h3>
     <hr />
     {% block content %}{% endblock content %}

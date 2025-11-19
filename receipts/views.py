@@ -91,7 +91,7 @@ def items(request):
             .order_by('-total_price')  # optional
         )
     context = {"items": items, "query_name": query_name, "plot": plot_html}
-    return render(request, 'items/items.html', context)
+    return render(request, 'receipts/items.html', context)
 
 
 def search_items(request):
@@ -131,7 +131,7 @@ def search_items(request):
     else:
         grouped = False
 
-    return render(request, "items/search.html", {
+    return render(request, "receipts/search.html", {
         "query": query,
         "items": items,
         "totals": totals,
@@ -139,3 +139,13 @@ def search_items(request):
         "avg_sum": totals.get('total_sum', 1) / total_days,
         "grouped": grouped
     })
+
+
+def categories(request):
+    categories = Category.objects.values_list('name', flat=True)
+
+    return render(request, "receipts/categories.html", {"categories": categories})
+
+
+def category_detail(request, category_slug):
+    return render(request, "receipts/category_detail.html", {"name": category_slug})

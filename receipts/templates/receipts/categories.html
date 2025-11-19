@@ -1,0 +1,10 @@
+{% extends 'receipts/base.html' %}
+
+{% block content %}
+
+  <ul>
+    {% for name in categories %}
+      <li><a href="{% url 'receipts:category_detail' name  %}">{{name}}</a></li>
+    {% endfor %}
+  </ul>
+{% endblock content %}
